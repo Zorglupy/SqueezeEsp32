@@ -26,6 +26,7 @@
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 
 #include <WiFiUdp.h>
+#include <ArduinoOTA.h>
 
 #ifdef ESP32
   #include <WiFi.h>
@@ -33,7 +34,6 @@
 #else
   #include <ESP8266WiFi.h>
   #include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
-  #include <ArduinoOTA.h>
 #endif
 
 
@@ -149,7 +149,7 @@ void setup() {
   
   wifiManager.autoConnect("SqueezeESP");
 
-  #ifdef OTA_ESP8266
+  #ifdef OTA_ESP
     ArduinoOTA.setHostname("SqueezeESP8266");
     ArduinoOTA.onStart([]() {
       String type;
@@ -216,7 +216,7 @@ void loop() {
 
   if (client.connected()) {
 
-    #ifdef OTA_ESP8266
+    #ifdef OTA_ESP
       if (vislimCli->vcPlayerStat != vislimCli->PlayStatus && (millis() - lastRetry) > OTA_HANDLE_TIMER) {
         lastRetry = millis();
         #ifdef DEBUG

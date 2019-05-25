@@ -8,7 +8,7 @@
 
 //#define WITHOUT_RB
 
-#define OTA_ESP8266
+#define OTA_ESP
 #define OTA_HANDLE_TIMER  5000 
 
 #define VS1053_MODULE
