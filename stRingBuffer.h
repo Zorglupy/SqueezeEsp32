@@ -2,6 +2,7 @@
 #define stRingBuffer_h
 
 #include <Arduino.h>
+#include "config.h"
 
 class stRingBuffer {
 public :
@@ -9,9 +10,10 @@ public :
   stRingBuffer(uint32_t pBufferSize);
   ~stRingBuffer();
 
+  #ifdef DEBUG  
+    void PrintRingBuffer(uint32_t pSize);
+  #endif
   
-  void PrintRingBuffer(uint32_t pSize);
-
   bool isFreeSpace();
   uint32_t dataSize();
   

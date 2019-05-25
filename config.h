@@ -8,17 +8,16 @@
 
 //#define WITHOUT_RB
 
+#define OTA_ESP8266
+#define OTA_HANDLE_TIMER  5000 
 
 #define VS1053_MODULE
 //#define ADAFRUIT_VS1053
 
 //#define I2S_DAC_MODULE
 
-//#define DEFAULT_LMS_ADDR "192.168.1.2"
-
 #define UDP_PORT 3483
 
 static IPAddress LMS_addr(0,0,0,0);
-
 
 #endif

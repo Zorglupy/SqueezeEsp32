@@ -1,30 +1,34 @@
 #ifndef slimproto_h
 #define slimproto_h
 
+#include "config.h"
+#include <Arduino.h>
+#include "stRingBuffer.h"
+#include <math.h>
+
 //#define ADAFRUIT_VS1053
 
 #ifdef ESP32
   #define RINGBFSIZ 100000
 #else
-  #define RINGBFSIZ 20000
+  #ifdef DEBUG
+    #define RINGBFSIZ 20000
+  #else  
+    #define RINGBFSIZ 24000
+  #endif
 #endif
-
-#include "config.h"
-#include <Arduino.h>
-#include "stRingBuffer.h"
-#include <math.h>
     
 #ifdef ESP32
-    #include <WiFi.h>
+  #include <WiFi.h>
 #else
-    #include <ESP8266WiFi.h>	
+  #include <ESP8266WiFi.h>	
 #endif
 
 #ifdef ADAFRUIT_VS1053
-    #include <Adafruit_VS1053.h>
-  #else
-    #include <VS1053.h>
-  #endif
+  #include <Adafruit_VS1053.h>
+#else
+  #include <VS1053.h>
+#endif
 
 
 struct __attribute__((packed)) StrmStructDef
@@ -118,8 +122,7 @@ struct __attribute__((packed)) stResponse
   uint8_t wlanChannel[2] = {0x00,0x00};
   uint8_t receivedData[8] = {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
   char language[2] = {0x45,0x4e};
-//  char capabilites[93] = "Model=squeezeesp,ModelName=SqueezeEsp,Firmware=77,ogg,flc,pcm,mp3,SampleRate=44100,HasPreAmp";
-//  char capabilites[92] = "Model=squeezeesp,ModelName=SqueezeEsp,Firmware=7,ogg,flc,pcm,mp3,SampleRate=44100,HasPreAmp";
+
   #ifdef ESP32
     char capabilites[95] = "Model=squeezeesp,ModelName=SqueezeEsp32,Firmware=77,ogg,flc,pcm,mp3,SampleRate=44100,HasPreAmp";
   #else
@@ -192,11 +195,18 @@ public:
 			uint16_t HandleMessages();
      
       uint16_t HandleAudio();
-			
+
+      enum player_status {
+          StopStatus,
+          PlayStatus,
+          PauseStatus
+        };
+
+      player_status vcPlayerStat = StopStatus ;    /* 0 = stop , 1 = play , 2 = pause */
+
 private:
 
       stRingBuffer * vcRingBuffer;
-      //stRingBuffer * vcCommandRingBuf;
 
       String vcAdrLMS;
       uint16_t vcPortLMS;
@@ -229,10 +239,12 @@ private:
 			void ExtractCommand(uint8_t * pBuf, uint16_t pSize);
 			void ByteArrayCpy(uint8_t * pDst, uint8_t * pSrv, uint16_t pSize);
 
-      void PrintByteArray(uint8_t * psrc, uint16_t pSize);
-      void PrintByteArray(String psrc, uint16_t pSize);
-      void PrintHex8(uint8_t *data, uint8_t length);
-      
+      #ifdef DEBUG
+        void PrintByteArray(uint8_t * psrc, uint16_t pSize);
+        void PrintByteArray(String psrc, uint16_t pSize);
+        void PrintHex8(uint8_t *data, uint8_t length);
+      #endif
+            
       void packN(uint32_t *dest, uint32_t val);
       void packn(uint16_t *dest, uint16_t val);
       uint32_t unpackN(uint32_t *src);
@@ -244,16 +256,8 @@ private:
       #ifdef ADAFRUIT_VS1053
         Adafruit_VS1053 * vcplayer;
       #else
-         VS1053 * vcplayer;
+        VS1053 * vcplayer;
       #endif
-
-      enum player_status {
-          StopStatus,
-          PlayStatus,
-          PauseStatus
-        };
-
-      player_status vcPlayerStat = StopStatus ;    /* 0 = stop , 1 = play , 2 = pause */
    
 };
     
