@@ -3,8 +3,7 @@
 
 #include <Arduino.h>
 
-class stRingBuffer
-{
+class stRingBuffer {
 public :
 
   stRingBuffer(uint32_t pBufferSize);
@@ -26,12 +25,12 @@ public :
 
 private :
 
- uint32_t vcRingBufferSize;         // Size of RingBuffer
- uint8_t* vcRingBuffer;             // RingBuffer
- uint32_t vcRBcount;                // Number of bytes in ringbuffer 
+  uint32_t vcRingBufferSize;                    // Size of RingBuffer
+  uint8_t* vcRingBuffer;                        // RingBuffer
+  uint32_t vcRBcount;                           // Number of bytes in ringbuffer 
 
-uint32_t         vcRBwindex = 0 ;                            // Fill pointer in ringbuffer
-uint32_t         vcRBrindex = vcRingBufferSize - 1 ;                // Emptypointer in ringbuffer
+  uint32_t vcRBwindex = 0 ;                     // Fill pointer in ringbuffer
+  uint32_t vcRBrindex = vcRingBufferSize - 1 ;  // Emptypointer in ringbuffer
   
 };
 

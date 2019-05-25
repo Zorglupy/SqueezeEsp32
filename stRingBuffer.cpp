@@ -22,23 +22,20 @@ uint32_t stRingBuffer::getBufferSize()
   return vcRingBufferSize;
 }
 
-void stRingBuffer::PrintRingBuffer(uint32_t pSize)
-{
-Serial.print("Array : ");
-if(pSize > dataSize())
- pSize = dataSize();
+void stRingBuffer::PrintRingBuffer(uint32_t pSize) {
+  Serial.print("Array : ");
+  if(pSize > dataSize())
+    pSize = dataSize();
 
- for(uint32_t i = 0; i < pSize; i++)
- {
-   Serial.print((unsigned char) *(vcRingBuffer + vcRBrindex +i) , HEX);
- }
+  for(uint32_t i = 0; i < pSize; i++) {
+    Serial.print((unsigned char) *(vcRingBuffer + vcRBrindex +i) , HEX);
+  }
   
   Serial.println("");
 }
 
 
-void stRingBuffer::clearBuffer()
-{
+void stRingBuffer::clearBuffer() {
   vcRBwindex = 0 ;                      // Reset ringbuffer administration
   vcRBrindex = vcRingBufferSize - 1 ;
   vcRBcount = 0 ;
